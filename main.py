@@ -7,11 +7,6 @@ def populate_means(num_samples):
 def get_arm_return(selected_sample, means):
     return np.random.normal(means[selected_sample], 1, 1)
 
-def sample_uniform(idx_range, exclude):
-    pick_range = np.arange(idx_range)
-    sample_range = np.delete(pick_range, exclude)
-    return np.random.choice(sample_range, 1)
-
 def is_greedy(epsilon):
     return np.random.uniform() >= epsilon
 
@@ -21,10 +16,10 @@ def choose_epsilon_greedy(pick_sum, pick_count, epsilon):
     if is_greedy(epsilon):
         return maxarg
     else:
-        return sample_uniform(len(pick_sum), maxarg)
+        return np.random.choice(len(pick_sum))
 
 def benchmark_policy(epsilon):
-    max_ensemble = 100
+    max_ensemble = 200
     max_iter = 1000
     arm_length = 10
 
@@ -40,13 +35,15 @@ def benchmark_policy(epsilon):
         best_arm = np.argmax(means)
         pick_sum.fill(0)
         pick_count.fill(0)
+        history_sum = 0
         for iter in range(max_iter):
             choice = choose_epsilon_greedy(pick_sum, pick_count, epsilon)
             return_value = get_arm_return(choice, means)
             pick_count[choice] += 1
             pick_sum[choice] += return_value
+            history_sum += return_value
 
-            reward_history[iter] += np.sum(pick_sum)/(iter+1)
+            reward_history[iter] += history_sum/(iter+1)
             best_pick_history[iter] += pick_count[best_arm]/(iter+1)
     
     return [reward_history/max_ensemble, best_pick_history/max_ensemble]
@@ -54,8 +51,8 @@ def benchmark_policy(epsilon):
 
 def main():
     [reward_history0, best_pick_history0] = benchmark_policy(0)
-    [reward_history1, best_pick_history1] = benchmark_policy(0.01)
-    [reward_history2, best_pick_history2] = benchmark_policy(0.001)
+    [reward_history1, best_pick_history1] = benchmark_policy(0.1)
+    [reward_history2, best_pick_history2] = benchmark_policy(0.01)
 
     plt.figure()
     plt.plot(reward_history0)
