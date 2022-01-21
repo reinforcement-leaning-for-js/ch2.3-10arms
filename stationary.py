@@ -77,6 +77,8 @@ plt.xlabel("timestep")
 plt.ylabel("Average Reward")
 plt.legend()
 
+plt.savefig("./images/stationary_reward.svg")
+
 plt.figure()
 for i in range(len(epsilons)):
     plt.plot(history_bests[i], linewidth=0.5, label=epsilons[i])
@@ -84,4 +86,4 @@ plt.xlabel("timestep")
 plt.ylabel("% best choice")
 plt.legend()
 
-plt.show()
+plt.savefig("./images/stationary_best.svg")

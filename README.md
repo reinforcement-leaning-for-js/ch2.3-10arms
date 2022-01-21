@@ -13,10 +13,13 @@ To intall, type the following command.
 - Each simulation goes until reach ```max_iter``` timestep.
 - The mean return value of each arm does not change over time.
 - Epsilon-greedy policy is implemented to find best epsilon.
+![Stationary Arms Average Reward](./images/stationary_reward.svg)
+![Stationary Arms Best choice Ratio](./images/stationary_best.svg)
 
 ### Non-stationary Case
 - Initially, each arm *i* return followes a distribution *norm(q(i), 1)* where *q(i)* is sampled from *norm(1, 0)*. 
 - Each *q(i)* slightly changes over time by adding *x(i)_t\~norm(0, 0.01)* on each timestep.
 - Fixed-weight (exponential recency) average algorithm is also implemented to compare with arithmatic average algorithm. The weighting factor is ```alpha```.
-
+![Non-stationary Arms Average Reward](./images/non_stationary_reward.svg)
+![Non-stationary Arms Best choice Ratio](./images/non_stationary_best.svg)
 
